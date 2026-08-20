@@ -6,11 +6,11 @@ import { useMasteryStore } from '../../store/useMasteryStore';
 import { useAppStore } from '../../store/useAppStore';
 import { repository } from '../../data/repository';
 import { strings } from '../../strings/en';
-import { Shield, Flame, RotateCcw, Trophy, Delete, Crown, Target, Zap } from 'lucide-react';
+import { Shield, Flame, RotateCcw, Trophy, Delete, Crown, Target, Zap, SlidersHorizontal } from 'lucide-react';
 import { fireConfetti } from '../../ui/components/ConfettiEffect';
 
 export const ArcadeContainer: React.FC = () => {
-  const { activeSkinId, gameSpeed, operationMode, setGameSpeed, setOperationMode } = useAppStore();
+  const { activeSkinId, gameSpeed, operationMode, setGameSpeed, setOperationMode, setScreen } = useAppStore();
   const { factStateMap, recordAttempt, loadAll } = useMasteryStore();
 
   const gameContainerRef = useRef<HTMLDivElement>(null);
@@ -267,7 +267,7 @@ export const ArcadeContainer: React.FC = () => {
         </div>
       </div>
 
-      {/* Quick Config Bar: Speed & Operation Mode */}
+      {/* Quick Config Bar: Speed, Operation Mode & Full Config Link */}
       <div className="w-full px-3 py-2 bg-surface/90 backdrop-blur-md rounded-2xl border border-slate-800/80 shadow-md mb-2 flex flex-wrap items-center justify-between gap-2">
         {/* Speed Selector */}
         <div className="flex items-center gap-1.5">
@@ -301,16 +301,13 @@ export const ArcadeContainer: React.FC = () => {
           </div>
         </div>
 
-        {/* Operation Mode Selector */}
-        <div className="flex items-center gap-1.5">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            Mode:
-          </span>
+        {/* Operation Mode Selector & Config Tab Link */}
+        <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-xl border border-slate-800">
             {[
-              { mode: 'mul' as const, label: '✖ Multi' },
-              { mode: 'div' as const, label: '➗ Div' },
-              { mode: 'both' as const, label: '✖➗ Both' }
+              { mode: 'mul' as const, label: '✖' },
+              { mode: 'div' as const, label: '➗' },
+              { mode: 'both' as const, label: '✖➗' }
             ].map(m => {
               const isSelected = operationMode === m.mode;
               return (
@@ -318,17 +315,28 @@ export const ArcadeContainer: React.FC = () => {
                   key={m.mode}
                   type="button"
                   onClick={() => setOperationMode(m.mode)}
-                  className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-0.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/40 scale-105'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
                   }`}
+                  title={`Mode: ${m.mode}`}
                 >
                   {m.label}
                 </button>
               );
             })}
           </div>
+
+          <button
+            type="button"
+            onClick={() => setScreen('settings')}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-surface-elevated hover:bg-slate-700 text-[11px] font-bold text-slate-300 hover:text-white border border-slate-700/60 transition-all cursor-pointer"
+            title="Open Full Game Configuration"
+          >
+            <SlidersHorizontal className="w-3 h-3 text-brand-400" />
+            <span>Config</span>
+          </button>
         </div>
       </div>
 
@@ -443,13 +451,22 @@ export const ArcadeContainer: React.FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col gap-2">
               <button
                 type="button"
                 onClick={restartGame}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 active:scale-95 text-white font-extrabold text-sm shadow-xl shadow-brand-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 active:scale-95 text-white font-extrabold text-sm shadow-xl shadow-brand-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" /> {strings.arcade.playAgain}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setScreen('settings')}
+                className="w-full py-3 rounded-2xl bg-surface-elevated hover:bg-slate-700 active:scale-95 text-slate-300 hover:text-white font-bold text-xs border border-slate-700/60 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <SlidersHorizontal className="w-4 h-4 text-brand-400" />
+                <span>Change Config / Mode</span>
               </button>
             </div>
           </div>

@@ -33,7 +33,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  currentScreen: 'home',
+  currentScreen: 'settings',
   selectedTable: null,
   activeSkinId: 'star_patrol',
   soundEnabled: true,
