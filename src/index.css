@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: #0B0F19;
+    color: #F8FAFC;
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.safe-area-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* Custom glowing pulse and animations */
+@keyframes glow {
+  0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.8)); }
+}
+
+.animate-glow {
+  animation: glow 2.5s infinite ease-in-out;
+}
